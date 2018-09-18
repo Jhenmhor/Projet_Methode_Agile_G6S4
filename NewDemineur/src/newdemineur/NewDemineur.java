@@ -7,6 +7,7 @@ package newdemineur;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 /**
  *
  * @author p1603760
