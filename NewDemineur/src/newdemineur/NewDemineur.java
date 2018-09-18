@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package newdemineur;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,7 +13,8 @@ import javax.swing.*;
  *
  * @author p1603760
  */
-public class NewDemineur extends JFrame implements ActionListener,MouseListener{
+public class NewDemineur extends JFrame implements ActionListener, MouseListener {
+
     int rows = 10;      //Lignes et colonnes
     int cols = 10;
     int numMines = 10;  //NB MINES
@@ -29,14 +31,14 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
     int[] numbers = new int[rows * cols];
     JButton[] buttons = new JButton[rows * cols];
     boolean[] clickdone = new boolean[rows * cols];
-    JMenuItem newGameButton = new JMenuItem("new game");
-    JMenuItem difficulty = new JMenuItem("options");
+    JMenuItem newGameButton = new JMenuItem("New game");
+    JMenuItem difficulty = new JMenuItem("Options");
+    JMenuItem regles = new JMenuItem("Regles");
     JLabel mineLabel = new JLabel("mines: " + numMines + " marked: 0");
     JPanel p = new JPanel();
-    
-    
- 
+
     public NewDemineur() {
+        
         
         p.setLayout(layout);
         setupI();
@@ -44,20 +46,36 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
             p.add(buttons[i]);
         }
         JMenuBar mb = new JMenuBar();
-        JMenu m = new JMenu("file");
+        JMenu m = new JMenu("Menu");
         newGameButton.addActionListener(this);
         m.add(newGameButton);
         difficulty.addActionListener(this);
         m.add(difficulty);
+        regles.addActionListener(this);
+        m.add(regles);
         mb.add(m);
         this.setJMenuBar(mb);
         this.add(p);
         this.add(mineLabel, BorderLayout.SOUTH);
         this.pack();
         this.setVisible(true);
-        
+        showRegles();
+
     }
- 
+
+    public void showRegles() {
+        final Container c = getContentPane();
+        JOptionPane.showMessageDialog(c,
+                "Le but du jeu est de découvrir toutes les cases libres sans faire exploser les mines."+"\n"+
+                "Pour libérer une case, faire un clic gauche (clic normal)"+"\n"+
+                "Pour marquer une mine, faire un clic droit, qui fera apparaître un X."+"\n"+
+                "Le compteur en bas à droite indique le nombre de mines qu'il reste à trouver."+"\n"+
+                "Le chiffre qui s'affiche sur les cases cliquées indique le nombre de mines se trouvant à proximité : "+"\n"+
+                "à gauche ou à droite, en haut ou en bas, ou en diagonale.","",
+                JOptionPane.INFORMATION_MESSAGE);
+
+    }
+
     public void fillMines() {
         int needed = numMines;
         while (needed > 0) {
@@ -69,7 +87,7 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
             }
         }
     }
- 
+
     public void fillNumbers() {
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < cols; y++) {
@@ -135,7 +153,7 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
             }
         }
     }
- 
+
     public void setupI() {
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < cols; y++) {
@@ -152,7 +170,7 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
         fillMines();
         fillNumbers();
     }
- 
+
     public void setupI2() {
         this.remove(p);
         p = new JPanel();
@@ -172,7 +190,7 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
         fillMines();
         fillNumbers();
     }
- 
+
     public void setup() {
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < cols; y++) {
@@ -188,11 +206,11 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
         lost = false;
         mineLabel.setText("mines: " + numMines + " marked: 0");
     }
- 
+
     public static void main(String[] args) {
         new NewDemineur();
     }
- 
+
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == difficulty) {
             rows = Integer.parseInt((String) JOptionPane.showInputDialog(
@@ -220,17 +238,25 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
             setup();
             won = false;
             return;
- 
+
         }
+        
+        if (e.getSource() == regles) {
+            showRegles();
+        }
+        
+        
+        
+        
         checkWin();
     }
- 
+
     public void mouseEntered(MouseEvent e) {
     }
- 
+
     public void mouseExited(MouseEvent e) {
     }
- 
+
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == 3) {
             int n = 0;
@@ -254,13 +280,13 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
             }
         }
     }
- 
+
     public void mouseReleased(MouseEvent e) {
     }
- 
+
     public void mouseClicked(MouseEvent e) {
     }
- 
+
     public void doCheck(int x, int y) {
         int cur = (rows * y) + x;
         boolean l = (x - 1) >= 0;
@@ -275,7 +301,7 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
         int down = (rows * (y + 1)) + (x);
         int downleft = (rows * (y + 1)) + (x - 1);
         int downright = (rows * (y + 1)) + (x + 1);
- 
+
         clickdone[cur] = true;
         buttons[cur].setEnabled(false);
         if (numbers[cur] == 0 && !mines[cur] && !lost && !won) {
@@ -343,7 +369,7 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
             doLose();
         }
     }
- 
+
     public void checkWin() {
         for (int x = 0; x < rows; x++) {
             for (int y = 0; y < cols; y++) {
@@ -357,20 +383,20 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
                 }
             }
         }
- 
+
         doWin();
     }
- 
+
     public void doWin() {
         if (!lost && !won) {
             won = true;
             JOptionPane.showMessageDialog(null,
-                    "GagnÃ©! Une fois de plus?", "Bien jouÃ©!",
+                    "GagnÃ©!", "Bien jouÃ©!",
                     JOptionPane.INFORMATION_MESSAGE);
-            newGameButton.doClick();
+            //newGameButton.doClick();
         }
     }
- 
+
     public void doLose() {
         if (!lost && !won) {
             lost = true;
@@ -380,9 +406,9 @@ public class NewDemineur extends JFrame implements ActionListener,MouseListener{
                 }
             }
             JOptionPane.showMessageDialog(null,
-                    "Perdu recommencez", "Dommage!",
+                    "Perdu", "Dommage!",
                     JOptionPane.ERROR_MESSAGE);
-            setup();
+            //setup();
         }
     }
 
