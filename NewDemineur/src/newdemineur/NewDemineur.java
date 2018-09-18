@@ -26,6 +26,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
      * type[(rows*y)+x];*/
     boolean[] mines = new boolean[rows * cols];
     boolean[] clickable = new boolean[rows * cols];
+    String[] state = new String[rows * cols];
     boolean lost = false;
     boolean won = false;
     int[] numbers = new int[rows * cols];
@@ -38,8 +39,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     JPanel p = new JPanel();
 
     public NewDemineur() {
-        
-        
+
         p.setLayout(layout);
         setupI();
         for (int i = 0; i < (rows * cols); i++) {
@@ -66,12 +66,12 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     public void showRegles() {
         final Container c = getContentPane();
         JOptionPane.showMessageDialog(c,
-                "Le but du jeu est de découvrir toutes les cases libres sans faire exploser les mines."+"\n"+
-                "Pour libérer une case, faire un clic gauche (clic normal)"+"\n"+
-                "Pour marquer une mine, faire un clic droit, qui fera apparaître un X."+"\n"+
-                "Le compteur en bas à droite indique le nombre de mines qu'il reste à trouver."+"\n"+
-                "Le chiffre qui s'affiche sur les cases cliquées indique le nombre de mines se trouvant à proximité : "+"\n"+
-                "à gauche ou à droite, en haut ou en bas, ou en diagonale.","",
+                "Le but du jeu est de découvrir toutes les cases libres sans faire exploser les mines." + "\n"
+                + "Pour libérer une case, faire un clic gauche (clic normal)" + "\n"
+                + "Pour marquer une mine, faire un clic droit, qui fera apparaître un X." + "\n"
+                + "Le compteur en bas à droite indique le nombre de mines qu'il reste à trouver." + "\n"
+                + "Le chiffre qui s'affiche sur les cases cliquées indique le nombre de mines se trouvant à proximité : " + "\n"
+                + "à gauche ou à droite, en haut ou en bas, ou en diagonale.", "",
                 JOptionPane.INFORMATION_MESSAGE);
 
     }
@@ -160,6 +160,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                 mines[(rows * y) + x] = false;
                 clickdone[(rows * y) + x] = false;
                 clickable[(rows * y) + x] = true;
+                state[(rows * y) + x] = "";
                 buttons[(rows * y) + x] = new JButton( /*"" + ( x * y )*/);
                 buttons[(rows * y) + x].setPreferredSize(new Dimension(
                         45, 45));
@@ -169,6 +170,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
         fillMines();
         fillNumbers();
+        go_Chrono();
     }
 
     public void setupI2() {
@@ -180,6 +182,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         mines = new boolean[rows * cols];
         clickdone = new boolean[rows * cols];
         clickable = new boolean[rows * cols];
+        String[] state = new String[rows * cols];
         numbers = new int[rows * cols];
         setupI();
         for (int i = 0; i < (rows * cols); i++) {
@@ -189,6 +192,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         this.pack();
         fillMines();
         fillNumbers();
+        go_Chrono();
     }
 
     public void setup() {
@@ -197,18 +201,16 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                 mines[(rows * y) + x] = false;
                 clickdone[(rows * y) + x] = false;
                 clickable[(rows * y) + x] = true;
+                state[(rows * y) + x] = "";
                 buttons[(rows * y) + x].setEnabled(true);
                 buttons[(rows * y) + x].setText("");
             }
         }
         fillMines();
         fillNumbers();
+        go_Chrono();
         lost = false;
         mineLabel.setText("mines: " + numMines + " marked: 0");
-    }
-
-    public static void main(String[] args) {
-        new NewDemineur();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -240,14 +242,11 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             return;
 
         }
-        
+
         if (e.getSource() == regles) {
             showRegles();
         }
-        
-        
-        
-        
+
         checkWin();
     }
 
@@ -267,12 +266,27 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                                 + x];
                     }
                     if (!clickdone[(rows * y) + x]) {
+
                         if (!clickable[(rows * y) + x]) {
-                            buttons[(rows * y) + x].setText("X");
+
+                            if (state[(rows * y) + x].equals("")) {
+                                state[(rows * y) + x] = "X";
+                                buttons[(rows * y) + x].setText("X");
+
+                            } else {
+                                state[(rows * y) + x] = "?";
+                                buttons[(rows * y) + x].setText("?");
+
+                            }
+
                             n++;
+
                         } else {
+
                             buttons[(rows * y) + x].setText("");
+
                         }
+
                         mineLabel.setText("mines: " + numMines + " marked: "
                                 + n);
                     }
@@ -390,8 +404,9 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     public void doWin() {
         if (!lost && !won) {
             won = true;
+            long temps = stop_Chrono();
             JOptionPane.showMessageDialog(null,
-                    "GagnÃ©!", "Bien jouÃ©!",
+                    "Tu as gagné en " + temps/1000 + " secondes", "Bien jouÃ©!",
                     JOptionPane.INFORMATION_MESSAGE);
             //newGameButton.doClick();
         }
@@ -405,11 +420,28 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                     buttons[i].doClick(0);
                 }
             }
+            long temps = stop_Chrono();
             JOptionPane.showMessageDialog(null,
-                    "Perdu", "Dommage!",
+                    "Tu as perdu en " + temps / 1000 + " secondes", "Dommage!",
                     JOptionPane.ERROR_MESSAGE);
             //setup();
         }
     }
 
+    static long chrono = 0;
+
+    static void go_Chrono() {
+        chrono = java.lang.System.currentTimeMillis();
+    }
+
+    static long stop_Chrono() {
+        long chrono2 = java.lang.System.currentTimeMillis();
+        long temps = chrono2 - chrono;
+        return temps;
+    }
+
+    public static void main(String[] args) {
+        new NewDemineur();
+        go_Chrono();
+    }
 }
