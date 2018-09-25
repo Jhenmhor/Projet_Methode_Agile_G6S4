@@ -42,9 +42,17 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
 
         p.setLayout(layout);
         setupI();
+
         for (int i = 0; i < (rows * cols); i++) {
+
             p.add(buttons[i]);
+            if (i % 2 == 0) {
+                buttons[i].setBackground(Color.GREEN);
+            } else {
+                buttons[i].setBackground(Color.RED);
+            }
         }
+
         JMenuBar mb = new JMenuBar();
         JMenu m = new JMenu("Menu");
         newGameButton.addActionListener(this);
@@ -61,7 +69,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         this.setVisible(true);
         showRegles();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
     }
 
     public void showRegles() {
@@ -286,7 +294,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                         }
 
                         mineLabel.setText("mines: " + numMines + " marked: " + n);
-                        
+
                     }
                 }
             }
@@ -439,6 +447,13 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     }
 
     public static void main(String[] args) {
+        /*
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+         */
         new NewDemineur();
         go_Chrono();
     }
