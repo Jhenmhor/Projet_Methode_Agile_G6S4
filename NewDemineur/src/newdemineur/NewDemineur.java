@@ -60,7 +60,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         this.pack();
         this.setVisible(true);
         showRegles();
-
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
     }
 
     public void showRegles() {
@@ -261,34 +262,31 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             int n = 0;
             for (int x = 0; x < rows; x++) {
                 for (int y = 0; y < cols; y++) {
-                    if (e.getSource() == buttons[(rows * y) + x]) {
-                        clickable[(rows * y) + x] = !clickable[(rows * y)
-                                + x];
-                    }
-                    if (!clickdone[(rows * y) + x]) {
 
-                        if (!clickable[(rows * y) + x]) {
+                    int ind = (rows * y) + x;
 
-                            if (state[(rows * y) + x].equals("")) {
-                                state[(rows * y) + x] = "X";
-                                buttons[(rows * y) + x].setText("X");
-
-                            } else {
-                                state[(rows * y) + x] = "?";
-                                buttons[(rows * y) + x].setText("?");
-
-                            }
-
-                            n++;
-
+                    if (e.getSource() == buttons[ind]) {
+                        clickable[ind] = !clickable[ind];
+                        if (state[ind].equals("")) {
+                            state[ind] = "X";
+                            buttons[ind].setText("X");
+                        } else if (state[ind].equals("X")) {
+                            state[ind] = "?";
+                            buttons[ind].setText("?");
                         } else {
+                            state[ind] = "";
+                            buttons[ind].setText("");
+                        }
+                    }
 
-                            buttons[(rows * y) + x].setText("");
+                    if (!clickdone[ind]) {
 
+                        if (!clickable[ind]) {
+                            n++;
                         }
 
-                        mineLabel.setText("mines: " + numMines + " marked: "
-                                + n);
+                        mineLabel.setText("mines: " + numMines + " marked: " + n);
+                        
                     }
                 }
             }
@@ -406,7 +404,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             won = true;
             long temps = stop_Chrono();
             JOptionPane.showMessageDialog(null,
-                    "Tu as gagné en " + temps/1000 + " secondes", "Bien jouÃ©!",
+                    "Tu as gagné en " + temps / 1000 + " secondes", "Bien jouÃ©!",
                     JOptionPane.INFORMATION_MESSAGE);
             //newGameButton.doClick();
         }
