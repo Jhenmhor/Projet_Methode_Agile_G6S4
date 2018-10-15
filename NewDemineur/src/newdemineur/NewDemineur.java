@@ -8,7 +8,6 @@ package newdemineur;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -44,6 +43,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
 
     public NewDemineur() {
 
+        changeProfil();
+        
         p.setLayout(layout);
         setupI();
 
@@ -191,7 +192,6 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
         fillMines();
         fillNumbers();
-        changeProfil();
         go_Chrono();
     }
 
@@ -212,7 +212,6 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
         this.add(p);
         this.pack();
-        changeProfil();
         fillMines();
         fillNumbers();
         go_Chrono();
@@ -231,12 +230,12 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
         fillMines();
         fillNumbers();
-        changeProfil();
         go_Chrono();
         lost = false;
         mineLabel.setText("mines: " + numMines + " marked: 0");
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == difficulty) {
             rows = Integer.parseInt((String) JOptionPane.showInputDialog(
