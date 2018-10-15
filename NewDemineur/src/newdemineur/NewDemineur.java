@@ -175,8 +175,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                 clickable[(rows * y) + x] = true;
                 state[(rows * y) + x] = "";
                 buttons[(rows * y) + x] = new JButton( /*"" + ( x * y )*/);
-                buttons[(rows * y) + x].setPreferredSize(new Dimension(
-                        45, 45));
+                buttons[(rows * y) + x].setPreferredSize(new Dimension(45, 45));
                 buttons[(rows * y) + x].addActionListener(this);
                 buttons[(rows * y) + x].addMouseListener(this);
             }
@@ -268,7 +267,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         
         if (e.getSource() == awfulColor) {
             for (int i = 0; i < (rows * cols); i++) {
-                buttons[i].setBackground(Color.RED);
+                if (!clickdone[i]) buttons[i].setBackground(Color.RED);
             }
         }
 
@@ -345,12 +344,14 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                 if (!clickdone[up] && !mines[up]) {
                     clickdone[up] = true;
                     buttons[up].doClick();
+                    buttons[up].setBackground(new JButton().getBackground());
                 }
                 if (l && !won) {
                     if (!clickdone[upleft] && numbers[upleft] != 0
                             && !mines[upleft]) {
                         clickdone[upleft] = true;
                         buttons[upleft].doClick();
+                        buttons[upleft].setBackground(new JButton().getBackground());
                     }
                 }
                 if (r && !won) {
@@ -358,6 +359,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                             && !mines[upright]) {
                         clickdone[upright] = true;
                         buttons[upright].doClick();
+                        buttons[upright].setBackground(new JButton().getBackground());
                     }
                 }
             }
@@ -365,12 +367,14 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                 if (!clickdone[down] && !mines[down]) {
                     clickdone[down] = true;
                     buttons[down].doClick();
+                    buttons[down].setBackground(new JButton().getBackground());
                 }
                 if (l && !won) {
                     if (!clickdone[downleft] && numbers[downleft] != 0
                             && !mines[downleft]) {
                         clickdone[downleft] = true;
                         buttons[downleft].doClick();
+                        buttons[downleft].setBackground(new JButton().getBackground());
                     }
                 }
                 if (r && !won) {
@@ -379,6 +383,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                             && !mines[downright]) {
                         clickdone[downright] = true;
                         buttons[downright].doClick();
+                        buttons[downright].setBackground(new JButton().getBackground());
                     }
                 }
             }
@@ -386,12 +391,14 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                 if (!clickdone[left] && !mines[left]) {
                     clickdone[left] = true;
                     buttons[left].doClick();
+                    buttons[left].setBackground(new JButton().getBackground());
                 }
             }
             if (r && !won) {
                 if (!clickdone[right] && !mines[right]) {
                     clickdone[right] = true;
                     buttons[right].doClick();
+                    buttons[right].setBackground(new JButton().getBackground());
                 }
             }
         } else {
