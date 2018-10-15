@@ -8,6 +8,7 @@ package newdemineur;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -33,6 +34,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     JButton[] buttons = new JButton[rows * cols];
     boolean[] clickdone = new boolean[rows * cols];
     JMenuItem newGameButton = new JMenuItem("New game");
+    JMenuItem cProfil = new JMenuItem("Change profile");
     JMenuItem difficulty = new JMenuItem("Options");
     JMenuItem classicColor = new JMenuItem("Classic");
     JMenuItem awfulColor = new JMenuItem("Rouge");
@@ -48,7 +50,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         for (int i = 0; i < (rows * cols); i++) {
 
             p.add(buttons[i]);
-            
+
         }
 
         JMenuBar mb = new JMenuBar();
@@ -60,6 +62,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         c.add(awfulColor);
         newGameButton.addActionListener(this);
         m.add(newGameButton);
+        cProfil.addActionListener(this);
+        m.add(cProfil);
         difficulty.addActionListener(this);
         m.add(difficulty);
         regles.addActionListener(this);
@@ -87,6 +91,11 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                 + "à gauche ou à droite, en haut ou en bas, ou en diagonale.", "",
                 JOptionPane.INFORMATION_MESSAGE);
 
+    }
+    
+    public void changeProfil(){
+        String input = JOptionPane.showInputDialog("Your Name : ");
+        this.setTitle(input);        
     }
 
     public void fillMines() {
@@ -182,6 +191,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
         fillMines();
         fillNumbers();
+        changeProfil();
         go_Chrono();
     }
 
@@ -202,6 +212,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
         this.add(p);
         this.pack();
+        changeProfil();
         fillMines();
         fillNumbers();
         go_Chrono();
@@ -220,6 +231,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
         fillMines();
         fillNumbers();
+        changeProfil();
         go_Chrono();
         lost = false;
         mineLabel.setText("mines: " + numMines + " marked: 0");
@@ -259,15 +271,24 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             showRegles();
         }
         
+        if (e.getSource() == cProfil) {
+            changeProfil();
+        }
+
         if (e.getSource() == classicColor) {
             for (int i = 0; i < (rows * cols); i++) {
                 buttons[i].setBackground(new JButton().getBackground());
             }
         }
-        
+
         if (e.getSource() == awfulColor) {
             for (int i = 0; i < (rows * cols); i++) {
-                if (!clickdone[i]) buttons[i].setBackground(Color.RED);
+                if (!clickdone[i]) {
+                    buttons[i].setBackground(Color.RED);
+                }
+                if (clickdone[i]) {
+                    buttons[i].setBackground(new JButton().getBackground());
+                }
             }
         }
 
@@ -462,7 +483,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     static void go_Chrono() {
         chrono = java.lang.System.currentTimeMillis();
     }
-
+    
     static long stop_Chrono() {
         long chrono2 = java.lang.System.currentTimeMillis();
         long temps = chrono2 - chrono;
@@ -470,13 +491,6 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     }
 
     public static void main(String[] args) {
-        /*
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-         */
         new NewDemineur();
         go_Chrono();
     }
