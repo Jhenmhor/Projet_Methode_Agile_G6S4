@@ -34,6 +34,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     boolean[] clickdone = new boolean[rows * cols];
     JMenuItem newGameButton = new JMenuItem("New game");
     JMenuItem difficulty = new JMenuItem("Options");
+    JMenuItem classicColor = new JMenuItem("Classic");
+    JMenuItem awfulColor = new JMenuItem("Rouge");
     JMenuItem regles = new JMenuItem("Regles");
     JLabel mineLabel = new JLabel("mines: " + numMines + " marked: 0");
     JPanel p = new JPanel();
@@ -46,15 +48,16 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         for (int i = 0; i < (rows * cols); i++) {
 
             p.add(buttons[i]);
-            if (i % 2 == 0) {
-                buttons[i].setBackground(Color.GREEN);
-            } else {
-                buttons[i].setBackground(Color.RED);
-            }
+            
         }
 
         JMenuBar mb = new JMenuBar();
         JMenu m = new JMenu("Menu");
+        JMenu c = new JMenu("Préférence");
+        classicColor.addActionListener(this);
+        c.add(classicColor);
+        awfulColor.addActionListener(this);
+        c.add(awfulColor);
         newGameButton.addActionListener(this);
         m.add(newGameButton);
         difficulty.addActionListener(this);
@@ -62,6 +65,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         regles.addActionListener(this);
         m.add(regles);
         mb.add(m);
+        mb.add(c);
         this.setJMenuBar(mb);
         this.add(p);
         this.add(mineLabel, BorderLayout.SOUTH);
@@ -254,6 +258,18 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
 
         if (e.getSource() == regles) {
             showRegles();
+        }
+        
+        if (e.getSource() == classicColor) {
+            for (int i = 0; i < (rows * cols); i++) {
+                buttons[i].setBackground(new JButton().getBackground());
+            }
+        }
+        
+        if (e.getSource() == awfulColor) {
+            for (int i = 0; i < (rows * cols); i++) {
+                buttons[i].setBackground(Color.RED);
+            }
         }
 
         checkWin();
