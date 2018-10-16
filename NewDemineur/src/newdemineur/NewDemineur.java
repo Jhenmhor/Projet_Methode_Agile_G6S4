@@ -19,6 +19,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     int cols = 10;
     int numMines = 10;  //NB MINES
     GridLayout layout = new GridLayout(rows, cols);
+    Object[][] data = new Object[0][2];
     /*type[][] name = new type[rows][cols];
      * type[x][y];
      * is 1d
@@ -32,6 +33,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     int[] numbers = new int[rows * cols];
     JButton[] buttons = new JButton[rows * cols];
     boolean[] clickdone = new boolean[rows * cols];
+    JMenuItem score = new JMenuItem("Score");
     JMenuItem newGameButton = new JMenuItem("New game");
     JMenuItem cProfil = new JMenuItem("Change profile");
     JMenuItem classicColor = new JMenuItem("Classic");
@@ -69,6 +71,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         m.add(newGameButton);
         cProfil.addActionListener(this);
         m.add(cProfil);
+        score.addActionListener(this);
+        m.add(score);
         regles.addActionListener(this);
         m.add(regles);
         easy.addActionListener(this);
@@ -280,6 +284,10 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             setupI2();
         }
 
+        if (e.getSource() == score) {
+            showScore();
+        }
+
         if (!won) {
             for (int x = 0; x < rows; x++) {
                 for (int y = 0; y < cols; y++) {
@@ -489,7 +497,12 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             JOptionPane.showMessageDialog(null,
                     "Tu as gagné en " + temps / 1000 + " secondes", "Bien jouÃ©!",
                     JOptionPane.INFORMATION_MESSAGE);
-            //newGameButton.doClick();
+
+            Object[] newPlayer = {this.getTitle(), temps / 1000};
+
+            this.data = add(this.data, newPlayer);
+
+            newGameButton.doClick();
         }
     }
 
@@ -519,6 +532,31 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         long chrono2 = java.lang.System.currentTimeMillis();
         long temps = chrono2 - chrono;
         return temps;
+    }
+
+    public void showScore() {
+        String column[] = {"Nom", "Score"};
+        JFrame f = new JFrame();
+        f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        
+        JTable jt = new JTable(data,column);
+        JScrollPane sp=new JScrollPane(jt);    
+        
+        f.add(sp);
+        f.setSize(300, 400);
+        f.setVisible(true);
+
+    }
+
+    public static Object[][] add(Object[][] arr, Object... elements) {
+        Object[][] tempArr = new Object[arr.length + elements.length][];
+        System.arraycopy(arr, 0, tempArr, 0, arr.length);
+
+        for (int i = 0; i < elements.length; i++) {
+            tempArr[arr.length + i][0] = elements[i];
+        }
+        return tempArr;
+
     }
 
     public static void main(String[] args) {
