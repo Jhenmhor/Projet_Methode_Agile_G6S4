@@ -34,17 +34,20 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     boolean[] clickdone = new boolean[rows * cols];
     JMenuItem newGameButton = new JMenuItem("New game");
     JMenuItem cProfil = new JMenuItem("Change profile");
-    JMenuItem difficulty = new JMenuItem("Options");
     JMenuItem classicColor = new JMenuItem("Classic");
     JMenuItem awfulColor = new JMenuItem("Rouge");
     JMenuItem regles = new JMenuItem("Regles");
+    JMenuItem easy = new JMenuItem("Easy");
+    JMenuItem normal = new JMenuItem("Normal");
+    JMenuItem hard = new JMenuItem("Hard");
+    JMenuItem custom = new JMenuItem("Custom");
     JLabel mineLabel = new JLabel("mines: " + numMines + " marked: 0");
     JPanel p = new JPanel();
 
     public NewDemineur() {
 
         changeProfil();
-        
+
         p.setLayout(layout);
         setupI();
 
@@ -57,6 +60,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         JMenuBar mb = new JMenuBar();
         JMenu m = new JMenu("Menu");
         JMenu c = new JMenu("Préférence");
+        JMenu d = new JMenu("Difficulty");
         classicColor.addActionListener(this);
         c.add(classicColor);
         awfulColor.addActionListener(this);
@@ -65,12 +69,19 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         m.add(newGameButton);
         cProfil.addActionListener(this);
         m.add(cProfil);
-        difficulty.addActionListener(this);
-        m.add(difficulty);
         regles.addActionListener(this);
         m.add(regles);
+        easy.addActionListener(this);
+        d.add(easy);
+        normal.addActionListener(this);
+        d.add(normal);
+        hard.addActionListener(this);
+        d.add(hard);
+        custom.addActionListener(this);
+        d.add(custom);
         mb.add(m);
         mb.add(c);
+        mb.add(d);
         this.setJMenuBar(mb);
         this.add(p);
         this.add(mineLabel, BorderLayout.SOUTH);
@@ -93,14 +104,14 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                 JOptionPane.INFORMATION_MESSAGE);
 
     }
-    
-    public void changeProfil(){
+
+    public void changeProfil() {
         String input = JOptionPane.showInputDialog("Your Name : ");
-        this.setTitle(input);        
+        this.setTitle(input);
     }
 
     public void fillMines() {
-        int needed = numMines;
+        int needed = this.numMines;
         while (needed > 0) {
             int x = (int) Math.floor(Math.random() * rows);
             int y = (int) Math.floor(Math.random() * cols);
@@ -201,10 +212,10 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         layout = new GridLayout(rows, cols);
         p.setLayout(layout);
         buttons = new JButton[rows * cols];
+        String[] state = new String[rows * cols];
         mines = new boolean[rows * cols];
         clickdone = new boolean[rows * cols];
         clickable = new boolean[rows * cols];
-        String[] state = new String[rows * cols];
         numbers = new int[rows * cols];
         setupI();
         for (int i = 0; i < (rows * cols); i++) {
@@ -212,7 +223,6 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
         this.add(p);
         this.pack();
-        fillMines();
         fillNumbers();
         go_Chrono();
     }
@@ -237,17 +247,41 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == difficulty) {
-            rows = Integer.parseInt((String) JOptionPane.showInputDialog(
+
+        if (e.getSource() == custom) {
+            this.rows = Integer.parseInt((String) JOptionPane.showInputDialog(
                     this, "Rows", "Rows", JOptionPane.PLAIN_MESSAGE, null,
                     null, 10));
-            cols = Integer.parseInt((String) JOptionPane.showInputDialog(
+            this.cols = Integer.parseInt((String) JOptionPane.showInputDialog(
                     this, "Columns", "Columns", JOptionPane.PLAIN_MESSAGE,
                     null, null, 10));
-            numMines = Integer.parseInt((String) JOptionPane.showInputDialog(this, "Mines", "Mines",
+            this.numMines = Integer.parseInt((String) JOptionPane.showInputDialog(this, "Mines", "Mines",
                     JOptionPane.PLAIN_MESSAGE, null, null, 10));
             setupI2();
         }
+
+        if (e.getSource() == easy) {
+            this.rows = 5;
+            this.cols = 5;
+            this.numMines = 2;
+
+            setupI2();
+        }
+        if (e.getSource() == normal) {
+            this.rows = 10;
+            this.cols = 10;
+            this.numMines = 10;
+
+            setupI2();
+        }
+        if (e.getSource() == hard) {
+            this.rows = 20;
+            this.cols = 20;
+            this.numMines = 80;
+
+            setupI2();
+        }
+
         if (!won) {
             for (int x = 0; x < rows; x++) {
                 for (int y = 0; y < cols; y++) {
@@ -269,7 +303,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         if (e.getSource() == regles) {
             showRegles();
         }
-        
+
         if (e.getSource() == cProfil) {
             changeProfil();
         }
@@ -482,7 +516,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     static void go_Chrono() {
         chrono = java.lang.System.currentTimeMillis();
     }
-    
+
     static long stop_Chrono() {
         long chrono2 = java.lang.System.currentTimeMillis();
         long temps = chrono2 - chrono;
