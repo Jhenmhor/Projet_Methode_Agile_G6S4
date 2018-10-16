@@ -495,7 +495,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             won = true;
             long temps = stop_Chrono();
             JOptionPane.showMessageDialog(null,
-                    "Tu as gagné en " + temps / 1000 + " secondes", "Bien jouÃ©!",
+                    "Tu as gagné en " + temps / 1000 + " secondes", "Bien joué!",
                     JOptionPane.INFORMATION_MESSAGE);
 
             Object[] newPlayer = {this.getTitle(), temps / 1000};
@@ -541,20 +541,20 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         
         JTable jt = new JTable(data,column);
         JScrollPane sp=new JScrollPane(jt);    
-        
+        jt.setAutoCreateRowSorter(true);
         f.add(sp);
         f.setSize(300, 400);
         f.setVisible(true);
 
     }
 
-    public static Object[][] add(Object[][] arr, Object... elements) {
-        Object[][] tempArr = new Object[arr.length + elements.length][];
+    public static Object[][] add(Object[][] arr, Object[] elements) {
+        Object[][] tempArr = new Object[arr.length + 1][2];
         System.arraycopy(arr, 0, tempArr, 0, arr.length);
-
-        for (int i = 0; i < elements.length; i++) {
-            tempArr[arr.length + i][0] = elements[i];
-        }
+        
+        tempArr[arr.length + 1][0] = elements[0];
+        tempArr[arr.length + 1][1] = elements[1];
+        
         return tempArr;
 
     }
