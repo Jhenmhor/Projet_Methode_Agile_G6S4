@@ -212,10 +212,11 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         layout = new GridLayout(rows, cols);
         p.setLayout(layout);
         buttons = new JButton[rows * cols];
-        String[] state = new String[rows * cols];
         mines = new boolean[rows * cols];
         clickdone = new boolean[rows * cols];
         clickable = new boolean[rows * cols];
+        String[] state = new String[rows * cols];
+        this.state = state;
         numbers = new int[rows * cols];
         setupI();
         for (int i = 0; i < (rows * cols); i++) {
@@ -249,11 +250,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == custom) {
-            this.rows = Integer.parseInt((String) JOptionPane.showInputDialog(
-                    this, "Rows", "Rows", JOptionPane.PLAIN_MESSAGE, null,
-                    null, 10));
-            this.cols = Integer.parseInt((String) JOptionPane.showInputDialog(
-                    this, "Columns", "Columns", JOptionPane.PLAIN_MESSAGE,
+            this.cols = this.rows = Integer.parseInt((String) JOptionPane.showInputDialog(
+                    this, "Size", "Size", JOptionPane.PLAIN_MESSAGE,
                     null, null, 10));
             this.numMines = Integer.parseInt((String) JOptionPane.showInputDialog(this, "Mines", "Mines",
                     JOptionPane.PLAIN_MESSAGE, null, null, 10));
@@ -261,23 +259,23 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         }
 
         if (e.getSource() == easy) {
-            this.rows = 5;
-            this.cols = 5;
-            this.numMines = 2;
-
-            setupI2();
-        }
-        if (e.getSource() == normal) {
             this.rows = 10;
             this.cols = 10;
             this.numMines = 10;
 
             setupI2();
         }
+        if (e.getSource() == normal) {
+            this.rows = 15;
+            this.cols = 15;
+            this.numMines = 25;
+
+            setupI2();
+        }
         if (e.getSource() == hard) {
             this.rows = 20;
             this.cols = 20;
-            this.numMines = 80;
+            this.numMines = 50;
 
             setupI2();
         }
@@ -507,7 +505,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             JOptionPane.showMessageDialog(null,
                     "Tu as perdu en " + temps / 1000 + " secondes", "Dommage!",
                     JOptionPane.ERROR_MESSAGE);
-            //setup();
+            setup();
         }
     }
 
