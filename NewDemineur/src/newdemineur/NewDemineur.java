@@ -94,9 +94,11 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         this.add(p);
         this.add(mineLabel, BorderLayout.SOUTH);
         this.pack();
-        this.setVisible(true);
-        showRegles();
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        showRegles();
+        this.setVisible(true);
+        
 
     }
 
@@ -303,10 +305,10 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
                     doLose();
                     break;
                 case "complain":
-                    JOptionPane.showMessageDialog(getContentPane(),"JAVA C'EST DE LA M****", "",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this,"JAVA C'EST DE LA M****", "",JOptionPane.INFORMATION_MESSAGE);
                     break;
                 default:
-                    JOptionPane.showMessageDialog(getContentPane(),"Code non valide", "",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this,"Code non valide", "",JOptionPane.ERROR_MESSAGE);
             }
 
         }
@@ -562,12 +564,14 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         String column[] = {"Nom", "Score"};
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+        
+        
         JTable jt = new JTable(data, column);
         JScrollPane sp = new JScrollPane(jt);
         jt.setAutoCreateRowSorter(true);
         f.add(sp);
         f.setSize(300, 400);
+        f.setLocationRelativeTo(p);
         f.setVisible(true);
 
     }
