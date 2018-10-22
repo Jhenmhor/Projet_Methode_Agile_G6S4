@@ -35,6 +35,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     JButton[] buttons = new JButton[rows * cols];
     boolean[] clickdone = new boolean[rows * cols];
     JMenuItem score = new JMenuItem("Score");
+    JMenuItem cheat = new JMenuItem("Joker");
     JMenuItem newGameButton = new JMenuItem("New game");
     JMenuItem cProfil = new JMenuItem("Change profile");
     JMenuItem classicColor = new JMenuItem("Classic");
@@ -76,6 +77,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         m.add(score);
         regles.addActionListener(this);
         m.add(regles);
+        cheat.addActionListener(this);
+        m.add(cheat);
         easy.addActionListener(this);
         d.add(easy);
         normal.addActionListener(this);
@@ -287,6 +290,25 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
 
         if (e.getSource() == score) {
             showScore();
+        }
+
+        if (e.getSource() == cheat) {
+            String code = (String) JOptionPane.showInputDialog(this, "Code :", "Code :", JOptionPane.PLAIN_MESSAGE, null, null, "");
+
+            switch (code) {
+                case "win":
+                    doWin();
+                    break;
+                case "lose":
+                    doLose();
+                    break;
+                case "complain":
+                    JOptionPane.showMessageDialog(getContentPane(),"JAVA C'EST DE LA M****", "",JOptionPane.INFORMATION_MESSAGE);
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(getContentPane(),"Code non valide", "",JOptionPane.INFORMATION_MESSAGE);
+            }
+
         }
 
         if (!won) {
@@ -502,7 +524,7 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             Object[] newPlayer = {this.getTitle(), temps / 1000};
 
             this.data = add(this.data, newPlayer);
-            
+
             showScore();
             newGameButton.doClick();
         }
@@ -540,9 +562,9 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         String column[] = {"Nom", "Score"};
         JFrame f = new JFrame();
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        
-        JTable jt = new JTable(data,column);
-        JScrollPane sp=new JScrollPane(jt);    
+
+        JTable jt = new JTable(data, column);
+        JScrollPane sp = new JScrollPane(jt);
         jt.setAutoCreateRowSorter(true);
         f.add(sp);
         f.setSize(300, 400);
@@ -553,10 +575,10 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
     public static Object[][] add(Object[][] arr, Object[] elements) {
         Object[][] tempArr = new Object[arr.length + 1][2];
         System.arraycopy(arr, 0, tempArr, 0, arr.length);
-        
+
         tempArr[arr.length][0] = elements[0];
         tempArr[arr.length][1] = elements[1];
-        
+
         return tempArr;
 
     }
