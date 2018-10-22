@@ -8,6 +8,7 @@ package newdemineur;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -501,7 +502,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
             Object[] newPlayer = {this.getTitle(), temps / 1000};
 
             this.data = add(this.data, newPlayer);
-
+            
+            showScore();
             newGameButton.doClick();
         }
     }
@@ -552,8 +554,8 @@ public class NewDemineur extends JFrame implements ActionListener, MouseListener
         Object[][] tempArr = new Object[arr.length + 1][2];
         System.arraycopy(arr, 0, tempArr, 0, arr.length);
         
-        tempArr[arr.length + 1][0] = elements[0];
-        tempArr[arr.length + 1][1] = elements[1];
+        tempArr[arr.length][0] = elements[0];
+        tempArr[arr.length][1] = elements[1];
         
         return tempArr;
 
